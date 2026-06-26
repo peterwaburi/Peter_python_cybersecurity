@@ -205,7 +205,7 @@ title.pack(pady=5)
 
 # Add an image here
 try:
-    image=-Image.open(relativePath("images.png"))
+    image=Image.open(relativePath("images.png"))
     image=image.resize((100, 100))
     lock_img=ImageTk.PhotoImage(image)
     image_label=tk.Label(root,image=lock_img, bg="#cc0000")
